@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 import streamlit as st
 import os
 
+import utils
+#from streaming import StreamHandler
+
 load_dotenv()
 
 ibm_url = os.getenv("IBM_WATSONX_URL")
@@ -52,6 +55,8 @@ def generate_response(input_text):
     llm_chain = LLMChain(llm=model, prompt=prompt_1, output_key='answer')
     st.info(llm_chain(input_text))
 
+
+@utils.enable_chat_history
 def main():
     st.set_page_config(
         page_title="IBM Watsonx Chatui by HCL",
@@ -59,20 +64,23 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded",
         menu_items={
-            'About': "# This is a header. This is an *extremely* cool app!"
+            'About': "# This is a header. This is an *extremely* cool app!",
+            'Github Source': "https://github.com/zuberahmed1987"
         }
     )
+    st.header('IBM Watsonx AI Chatbot')
+    st.write('Allows users to interact with the IBM watsonx AI LLM')
     st.markdown("<h1 style='text-align: center; color: blue;'>Chat with IBM Watsonx AI </h1>", unsafe_allow_html=True)
     
-    col1, col2 = st.columns([1,1])
-    with col2:
-        st.info("Chat Below")
-        input_text = st.text_area("Enter your query")
-        if input_text is not None:
-            if st.button("Chat with IBM Watsonx AI"):
-                st.info("Your Query: "+input_text)
-                result = generate_response(input_text)
-                st.success(result)
+
+    st.info("Chat Below")
+    input_text = st.chat_input(placeholder="Ask me anything!")
+    input_text = st.text_area("Enter your query")
+    if input_text is not None:
+        if st.button("Chat with IBM Watsonx AI"):
+            st.info("Your Query: "+input_text)
+            result = generate_response(input_text)
+            st.success(result)
     #with st.form('my_form'):
     #    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
     #    submitted = st.form_submit_button('Submit')
