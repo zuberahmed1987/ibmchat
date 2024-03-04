@@ -18,28 +18,20 @@ log_level = os.getenv("LOG_LEVEL", "INFO")
 #logger = logging.getLogger(__name__)
 #logging.basicConfig(level=log_level)
 
-credentials = {
-    "url": ibm_url,
-    "apikey": ibm_apikey
-}
+def get_credentials():
+	return {
+		"url" : ibm_url,
+		"apikey" : ibm_apikey
+	}
 
-parameters = {
-    GenParams.DECODING_METHOD: DecodingMethods.SAMPLE.value,
-    GenParams.MAX_NEW_TOKENS: 4096,
-    GenParams.MIN_NEW_TOKENS: 1,
-    GenParams.TEMPERATURE: 0.5,
-    GenParams.TOP_K: 50,
-    GenParams.TOP_P: 1,
-    "stop_sequences": ["<end_of_code>"]
-}
-
+# Call IBM Watsonx
 model = Model(
-    model_id=model_id,
-    url=credentials["url"],
-    apikey=credentials["apikey"],
-    project_id=project_id,
-    params=parameters
-    )
+    model_id = model_id,
+    params = None,
+    credentials = get_credentials(),
+    project_id = project_id,
+    space_id = space_id
+)
 
 def generate_response(input_text):
     for chunk in generated_response:
@@ -72,13 +64,37 @@ CMD ["python", "app.py"]
 <end_of_code>
 user: {user_query}
 assistant: """
+    
+    parameters = {
+    "decoding_method": "sample",
+    "max_new_tokens": data.max_tokens,
+    "min_new_tokens": 1,
+    "temperature": data.temperature,
+    "repetition_penalty": 1,
+    "stop_sequences": ["<end_of_code>"]
+    }
 
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    # Display chat messages from history on app rerun
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+        
     if user_query:
-        utils.display_msg(user_query, 'user')
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(user_query)
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": user_query})
+        
         with st.chat_message("assistant"):
             #response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
             #response = generate_response(response)
             response = model.generate_text(prompt=prompt_input, params=parameters, guardrails=True)
+            st.markdown(response)
             st.session_state.messages.append({"role": "assistant", "content": response})
     
     #input_text = st.text_area("Enter your query")
