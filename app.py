@@ -23,23 +23,26 @@ def get_credentials():
 		"url" : ibm_url,
 		"apikey" : ibm_apikey
 	}
-	
-parameters = {
-"decoding_method": "sample",
-"max_new_tokens": 4000,
-"min_new_tokens": 1,
-"temperature": 0.2,
-"repetition_penalty": 1
-}
 
-# Call IBM Watsonx
-model = Model(
-    model_id = model_id,
-    params = parameters,
-    credentials = get_credentials(),
-    project_id = project_id,
-    space_id = space_id
-)
+@st.cache_resource
+def load_model():
+    parameters = {
+    "decoding_method": "sample",
+    "max_new_tokens": 4000,
+    "min_new_tokens": 1,
+    "temperature": 0.2,
+    "repetition_penalty": 1
+    }
+    
+    # Call IBM Watsonx
+    model = Model(
+        model_id = model_id,
+        params = parameters,
+        credentials = get_credentials(),
+        project_id = project_id,
+        space_id = space_id
+    )
+    return model
 
 def response_generator(generated_response):
     for chunk in generated_response:
@@ -84,6 +87,7 @@ assistant: """
                 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
+            model = load_model()
             genrated_stream = model.generate_text_stream(prompt=prompt_input)
             response = st.write_stream(response_generator(genrated_stream))
         # Add assistant response to chat history
