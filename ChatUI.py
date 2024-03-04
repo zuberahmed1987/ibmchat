@@ -24,8 +24,8 @@ def get_credentials():
         "apikey" : ibm_apikey
     }
 
-@st.spinner('Loading Model...')
 @st.cache_resource
+@st.spinner('Loading Model...')
 def load_model():
     parameters = {
     "decoding_method": "sample",
