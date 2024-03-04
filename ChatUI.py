@@ -4,6 +4,7 @@ from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
 import os
+from streamlit_local_storage import LocalStorage
 
 load_dotenv()
 
@@ -56,12 +57,14 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded"
     )
+    localS = LocalStorage() 
     with st.sidebar:
         model = load_model()
         if st.button('Clear Conversation'):
             st.session_state.conversation = None
             st.session_state.chat_history = None
             st.session_state.messages = []
+            localS.deleteAll()
             st.toast('Chat History Cleared!')
             
     st.header('IBM Watsonx AI Chatbot')
@@ -74,7 +77,10 @@ assistant: """
     
     # Initialize chat history
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+        try:
+            st.session_state.messages = localS.getItem("messages")
+        except:
+            st.session_state.messages = []
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
@@ -87,19 +93,16 @@ assistant: """
             st.markdown(user_query)
             # Add user message to chat history
             st.session_state.messages.append({"role": "user", "content": user_query})
-        
-        #with st.chat_message("assistant"):
-        #    response = model.generate_text(prompt=prompt_input)
-        #    st.markdown(response)
-        #    st.session_state.messages.append({"role": "assistant", "content": response})
-                
+            localS.setItem("messages", st.session_state.messages)
+
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
             genrated_stream = model.generate_text_stream(prompt=prompt_input)
             response = st.write_stream(response_generator(genrated_stream))
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
-	
+	    localS.setItem("messages", st.session_state.messages)
+        
 if __name__ == "__main__":
     main()
 
