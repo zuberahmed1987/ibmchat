@@ -41,7 +41,7 @@ model = Model(
     space_id = space_id
 )
 
-def generate_response(input_text):
+def response_generator(generated_response):
     for chunk in generated_response:
         yield chunk
 
@@ -77,25 +77,18 @@ assistant: """
             # Add user message to chat history
             st.session_state.messages.append({"role": "user", "content": user_query})
         
-        with st.chat_message("assistant"):
-            #response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
-            #response = generate_response(response)
-            response = model.generate_text(prompt=prompt_input)
-            st.markdown(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-    
-    #input_text = st.text_area("Enter your query")
-    #if input_text is not None:
-    #    st.info("User: "+input_text)
-    #    result = generate_response(input_text)
-    #    st.success('AI: ' +result)
-
-
-    #with st.form('my_form'):
-    #    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
-    #    submitted = st.form_submit_button('Submit')
-    #    generate_response(text)
-
+        #with st.chat_message("assistant"):
+        #    response = model.generate_text(prompt=prompt_input)
+        #    st.markdown(response)
+        #    st.session_state.messages.append({"role": "assistant", "content": response})
+		
+	# Display assistant response in chat message container
+	with st.chat_message("assistant"):
+	    genrated_stream = model.generate_text_stream(prompt=prompt_input)
+	    response = st.write_stream(response_generator(genrated_stream))
+	# Add assistant response to chat history
+	st.session_state.messages.append({"role": "assistant", "content": response})
+	
 if __name__ == "__main__":
     main()
 
