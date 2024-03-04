@@ -4,9 +4,10 @@ from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
 import os
-from streamlit_local_storage import LocalStorage
+import SessionStorage
 
 load_dotenv()
+sessionBrowserS = SessionStorage()
 
 ibm_url = os.getenv("IBM_WATSONX_URL")
 ibm_apikey = os.getenv("IBM_WATSONX_API_KEY")
@@ -64,10 +65,10 @@ def main():
             st.session_state.conversation = None
             st.session_state.chat_history = None
             st.session_state.messages = []
-            localS.deleteAll()
+            sessionBrowserS.deleteAll()
             st.toast('Chat History Cleared!')
         if st.button('Print data'):
-            st.toast(localS.getItem("messages"))
+            st.toast(sessionBrowserS.getItem("messages"))
             
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
@@ -80,7 +81,7 @@ assistant: """
     # Initialize chat history
     if "messages" not in st.session_state:
         try:
-            localS.getItem(st.session_state["messages"],key="messages")
+            st.session_state.messages = sessionBrowserS.getItem("messages")
         except:
             st.session_state.messages = []
 
@@ -102,7 +103,8 @@ assistant: """
             response = st.write_stream(response_generator(genrated_stream))
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
-            localS.setItem("messages", st.session_state["messages"])
+            #localS.setItem("messages", st.session_state["messages"])
+            sessionBrowserS.setItem("messages", st.session_state["messages"])
         
 if __name__ == "__main__":
     main()
