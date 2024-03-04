@@ -58,7 +58,7 @@ def generate_response(input_text):
         template="Answer the following question: {question}"
     )
 
-    llm_chain = LLMChain(llm=model, prompt=prompt_1, , output_key='answer')
+    llm_chain = LLMChain(llm=model, prompt=prompt_1, output_key='answer')
     st.info(llm_chain(input_text))
   
 with st.form('my_form'):
