@@ -1,4 +1,4 @@
-from langchain import PromptTemplate
+from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from ibm_watsonx_ai.foundation_models import Model
 from dotenv import load_dotenv
