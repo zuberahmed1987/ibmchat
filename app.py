@@ -88,14 +88,14 @@ assistant: """
         with st.chat_message("user"):
             st.markdown(user_query)
         # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": user_query})
+        #st.session_state.messages.append({"role": "user", "content": user_query})
         
         with st.chat_message("assistant"):
             #response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
             #response = generate_response(response)
             response = model.generate_text(prompt=prompt_input)
             st.markdown(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
+            #st.session_state.messages.append({"role": "assistant", "content": response})
     
     #input_text = st.text_area("Enter your query")
     #if input_text is not None:
