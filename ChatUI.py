@@ -24,7 +24,6 @@ def get_credentials():
 		"apikey" : ibm_apikey
 	}
 
-@st.spinner('Loading Model..')
 @st.cache_resource
 def load_model():
     parameters = {
@@ -59,6 +58,9 @@ def main():
     )
     with st.sidebar:
         model = load_model()
+        if st.button('Clear Chat History'):
+            st.session_state.messages = []
+            
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
     user_query = st.chat_input(placeholder="Ask me anything!")
