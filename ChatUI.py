@@ -24,6 +24,7 @@ def get_credentials():
 		"apikey" : ibm_apikey
 	}
 
+@st.spinner('Loading Model...'):
 @st.cache_resource
 def load_model():
     parameters = {
@@ -58,7 +59,7 @@ def main():
     )
     with st.sidebar:
         model = load_model()
-        if st.button('Cook breakfast'):
+        if st.button('Clear Conversation'):
             st.session_state.conversation = None
             st.session_state.chat_history = None
             st.session_state.messages = []
