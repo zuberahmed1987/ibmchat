@@ -23,11 +23,20 @@ def get_credentials():
 		"url" : ibm_url,
 		"apikey" : ibm_apikey
 	}
+	
+parameters = {
+"decoding_method": "sample",
+"max_new_tokens": 4000,
+"min_new_tokens": 1,
+"temperature": 0.2,
+"repetition_penalty": 1,
+"stop_sequences": ["<end_of_code>"]
+}
 
 # Call IBM Watsonx
 model = Model(
     model_id = model_id,
-    params = None,
+    params = parameters,
     credentials = get_credentials(),
     project_id = project_id,
     space_id = space_id
@@ -65,15 +74,6 @@ CMD ["python", "app.py"]
 user: {user_query}
 assistant: """
     
-    parameters = {
-    "decoding_method": "sample",
-    "max_new_tokens": 4000,
-    "min_new_tokens": 1,
-    "temperature": 0.2,
-    "repetition_penalty": 1,
-    "stop_sequences": ["<end_of_code>"]
-    }
-
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
