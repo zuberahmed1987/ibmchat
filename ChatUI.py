@@ -58,8 +58,12 @@ def main():
     )
     with st.sidebar:
         model = load_model()
-        if st.button('Clear Chat History'):
-            st.session_state.messages = []
+        reset_button_key = "reset_button"
+        reset_button = st.button("Reset Chat",key=reset_button_key)
+        if reset_button:
+            st.session_state.conversation = None
+            st.session_state.chat_history = None
+            st.toast('Chat History Cleared!')
             
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
