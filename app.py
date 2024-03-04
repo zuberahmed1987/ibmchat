@@ -44,9 +44,21 @@ model = Model(
     )
 
 def generate_response(input_text):
+    for chunk in generated_response:
+        yield chunk
 
+
+def main():
+    st.set_page_config(
+        page_title="IBM Watsonx Chatui by HCL",
+        page_icon="🧊",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    st.header('IBM Watsonx AI Chatbot')
+    st.write('Allows users to interact with the IBM watsonx AI LLM')
+    user_query = st.chat_input(placeholder="Ask me anything!")
     system_messages = "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using markdown."
-
     prompt_input = f"""system: {system_messages}
 User: create dockerfile for python app
 assisassistant: 
@@ -60,30 +72,15 @@ EXPOSE 80
 CMD ["python", "app.py"]
 ```
 <end_of_code>
-user: {input_text}
+user: {user_query}
 assistant: """
 
-    generated_response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
-    for chunk in response:
-        yield chunk
-
-
-def main():
-    st.set_page_config(
-        page_title="IBM Watsonx Chatui by HCL",
-        page_icon="🧊",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
-    st.header('IBM Watsonx AI Chatbot')
-    st.write('Allows users to interact with the IBM watsonx AI LLM')
-    
-    user_query = st.chat_input(placeholder="Ask me anything!")
     if user_query:
         utils.display_msg(user_query, 'user')
         with st.chat_message("assistant"):
+            response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
             st_cb = StreamHandler(st.empty())
-            response = generated_response(user_query)
+            response = generate_response(response)
             st.session_state.messages.append({"role": "assistant", "content": response})
     
     #input_text = st.text_area("Enter your query")
