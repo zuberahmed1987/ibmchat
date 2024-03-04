@@ -4,8 +4,6 @@ from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
 import os
-from streaming import StreamHandler
-
 
 load_dotenv()
 
@@ -78,9 +76,9 @@ assistant: """
     if user_query:
         utils.display_msg(user_query, 'user')
         with st.chat_message("assistant"):
-            response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
-            st_cb = StreamHandler(st.empty())
-            response = generate_response(response)
+            #response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
+            #response = generate_response(response)
+            response = model.generate_text(prompt=prompt_input, params=parameters, guardrails=True)
             st.session_state.messages.append({"role": "assistant", "content": response})
     
     #input_text = st.text_area("Enter your query")
