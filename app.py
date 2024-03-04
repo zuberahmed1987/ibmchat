@@ -1,6 +1,7 @@
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_ibm import WatsonxLLM
+from langchain.chains import ConversationChain
 from ibm_watsonx_ai.foundation_models import Model
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
@@ -56,7 +57,7 @@ def generate_response(input_text):
     st.info(llm_chain(input_text))
 
 
-@utils.enable_chat_history
+#@utils.enable_chat_history
 def main():
     st.set_page_config(
         page_title="IBM Watsonx Chatui by HCL",
@@ -75,7 +76,7 @@ def main():
 
     st.info("Chat Below")
     input_text = st.chat_input(placeholder="Ask me anything!")
-    input_text = st.text_area("Enter your query")
+    #input_text = st.text_area("Enter your query")
     if input_text is not None:
         if st.button("Chat with IBM Watsonx AI"):
             st.info("Your Query: "+input_text)
