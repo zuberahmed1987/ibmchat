@@ -71,7 +71,6 @@ def main():
     )
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
-    st.markdown("<h1 style='text-align: center; color: blue;'>Chat with IBM Watsonx AI </h1>", unsafe_allow_html=True)
     
     input_text = st.chat_input(placeholder="Ask me anything!")
     #input_text = st.text_area("Enter your query")
