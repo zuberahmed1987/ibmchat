@@ -80,7 +80,7 @@ assistant: """
     # Initialize chat history
     if "messages" not in st.session_state:
         try:
-            st.session_state.messages = localS.getItem("messages") | []
+            localS.getItem(st.session_state["messages"],key="messages")
         except:
             st.session_state.messages = []
 
@@ -95,7 +95,6 @@ assistant: """
             st.markdown(user_query)
             # Add user message to chat history
             st.session_state.messages.append({"role": "user", "content": user_query})
-            localS.setItem("messages", st.session_state["messages"])
 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
