@@ -24,8 +24,9 @@ def get_credentials():
 		"apikey" : ibm_apikey
 	}
 
-@st.cache
+@st.cache_resource
 def load_model():
+    st.header("Loading IBM Model")
     parameters = {
     "decoding_method": "sample",
     "max_new_tokens": 4000,
@@ -42,6 +43,7 @@ def load_model():
         project_id = project_id,
         space_id = space_id
     )
+    st.success("Model Loaded!")
     return model
 
 def response_generator(generated_response):
