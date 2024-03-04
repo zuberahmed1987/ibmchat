@@ -19,12 +19,12 @@ log_level = os.getenv("LOG_LEVEL", "INFO")
 #logging.basicConfig(level=log_level)
 
 def get_credentials():
-	return {
-		"url" : ibm_url,
-		"apikey" : ibm_apikey
-	}
+    return {
+        "url" : ibm_url,
+        "apikey" : ibm_apikey
+    }
 
-@st.spinner('Loading Model...'):
+@st.spinner('Loading Model...')
 @st.cache_resource
 def load_model():
     parameters = {
