@@ -4,9 +4,8 @@ from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
 import os
+from streaming import StreamHandler
 
-import utils
-#from streaming import StreamHandler
 
 load_dotenv()
 
