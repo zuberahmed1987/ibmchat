@@ -79,6 +79,7 @@ assistant: """
     if "messages" not in st.session_state:
         try:
             st.session_state.messages = localS.getItem("messages") | []
+            st.write(st.session_state.messages)
         except:
             st.session_state.messages = []
 
