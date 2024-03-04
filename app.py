@@ -1,7 +1,3 @@
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
-from langchain_ibm import WatsonxLLM
-from langchain.chains import ConversationChain
 from ibm_watsonx_ai.foundation_models import Model
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
@@ -36,10 +32,11 @@ parameters = {
     GenParams.MIN_NEW_TOKENS: 1,
     GenParams.TEMPERATURE: 0.5,
     GenParams.TOP_K: 50,
-    GenParams.TOP_P: 1
+    GenParams.TOP_P: 1,
+    "stop_sequences": ["<end_of_code>"]
 }
 
-model = WatsonxLLM(
+model = Model(
     model_id=model_id,
     url=credentials["url"],
     apikey=credentials["apikey"],
@@ -48,36 +45,54 @@ model = WatsonxLLM(
     )
 
 def generate_response(input_text):
-    prompt_1 = PromptTemplate(
-        input_variables=["question"],
-        template="Answer the following question: {question}"
-    )
 
-    llm_chain = LLMChain(llm=model, prompt=prompt_1, output_key='answer')
-    st.info(llm_chain(input_text))
+    system_messages = "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using markdown."
+
+    prompt_input = f"""system: {system_messages}
+User: create dockerfile for python app
+assisassistant: 
+```Dockerfile
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . /app
+EXPOSE 80
+CMD ["python", "app.py"]
+```
+<end_of_code>
+user: {input_text}
+assistant: """
+
+    generated_response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
+    return generated_response
 
 
-#@utils.enable_chat_history
 def main():
     st.set_page_config(
         page_title="IBM Watsonx Chatui by HCL",
         page_icon="🧊",
         layout="wide",
-        initial_sidebar_state="expanded",
-        menu_items={
-            'About': "# This is a header. This is an *extremely* cool app!",
-            'Report a bug': "https://github.com/zuberahmed1987"
-        }
+        initial_sidebar_state="expanded"
     )
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
     
-    input_text = st.chat_input(placeholder="Ask me anything!")
+    user_query = st.chat_input(placeholder="Ask me anything!")
+    if user_query:
+        utils.display_msg(user_query, 'user')
+        with st.chat_message("assistant"):
+            st_cb = StreamHandler(st.empty())
+            response = generated_response(user_query)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+    
     #input_text = st.text_area("Enter your query")
-    if input_text is not None:
-        st.info("User: "+input_text)
-        result = generate_response(input_text)
-        st.success(result)
+    #if input_text is not None:
+    #    st.info("User: "+input_text)
+    #    result = generate_response(input_text)
+    #    st.success('AI: ' +result)
+
+
     #with st.form('my_form'):
     #    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
     #    submitted = st.form_submit_button('Submit')
