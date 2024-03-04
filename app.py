@@ -21,16 +21,6 @@ log_level = os.getenv("LOG_LEVEL", "INFO")
 #logger = logging.getLogger(__name__)
 #logging.basicConfig(level=log_level)
 
-st.set_page_config(
-    page_title="IBM Watsonx Chatui by HCL",
-    page_icon="🧊",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'About': "# This is a header. This is an *extremely* cool app!"
-    }
-)
-
 credentials = {
     "url": ibm_url,
     "apikey": ibm_apikey
@@ -61,12 +51,34 @@ def generate_response(input_text):
 
     llm_chain = LLMChain(llm=model, prompt=prompt_1, output_key='answer')
     st.info(llm_chain(input_text))
-  
-with st.form('my_form'):
-    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
-    submitted = st.form_submit_button('Submit')
-    generate_response(text)
 
+def main():
+    st.set_page_config(
+        page_title="IBM Watsonx Chatui by HCL",
+        page_icon="🧊",
+        layout="wide",
+        initial_sidebar_state="expanded",
+        menu_items={
+            'About': "# This is a header. This is an *extremely* cool app!"
+        }
+    )
+    st.markdown("<h1 style='text-align: center; color: blue;'>Chat with IBM Watsonx AI </h1>", unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([1,1])
+    with col2:
+        st.info("Chat Below")
+        input_text = st.text_area("Enter your query")
+            if input_text is not None:
+            if st.button("Chat with IBM Watsonx AI"):
+                st.info("Your Query: "+input_text)
+                result = generate_response(input_text)
+                st.success(result)
+    #with st.form('my_form'):
+    #    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
+    #    submitted = st.form_submit_button('Submit')
+    #    generate_response(text)
 
+if __name__ == "__main__":
+    main()
 
 
