@@ -66,7 +66,7 @@ def main():
         initial_sidebar_state="expanded",
         menu_items={
             'About': "# This is a header. This is an *extremely* cool app!",
-            'Github Source': "https://github.com/zuberahmed1987"
+            'Report a bug': "https://github.com/zuberahmed1987"
         }
     )
     st.header('IBM Watsonx AI Chatbot')
