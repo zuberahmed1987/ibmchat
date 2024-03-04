@@ -67,9 +67,9 @@ assistant: """
     
     parameters = {
     "decoding_method": "sample",
-    "max_new_tokens": data.max_tokens,
+    "max_new_tokens": 4000,
     "min_new_tokens": 1,
-    "temperature": data.temperature,
+    "temperature": 0.2,
     "repetition_penalty": 1,
     "stop_sequences": ["<end_of_code>"]
     }
