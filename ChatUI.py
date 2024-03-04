@@ -56,7 +56,7 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded"
     )
-    localS = LocalStorage() 
+    
     with st.sidebar:
         model = load_model()
         if st.button('Clear Conversation'):
