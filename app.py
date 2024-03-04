@@ -64,7 +64,8 @@ user: {input_text}
 assistant: """
 
     generated_response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
-    return generated_response
+    for chunk in response:
+        yield chunk
 
 
 def main():
