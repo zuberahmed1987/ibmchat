@@ -6,6 +6,7 @@ from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
+import os
 
 load_dotenv()
 
