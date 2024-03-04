@@ -3,4 +3,5 @@ ibm_watsonx_ai
 python-dotenv
 langchain
 langchain_ibm
-utils
+cython
+streaming
