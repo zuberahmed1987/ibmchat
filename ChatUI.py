@@ -56,7 +56,9 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded"
     )
-    model = load_model()
+    with st.sidebar:
+        with st.spinner("Loading Model..."):
+            model = load_model()
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
     user_query = st.chat_input(placeholder="Ask me anything!")
