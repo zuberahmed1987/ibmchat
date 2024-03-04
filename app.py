@@ -73,15 +73,12 @@ def main():
     st.write('Allows users to interact with the IBM watsonx AI LLM')
     st.markdown("<h1 style='text-align: center; color: blue;'>Chat with IBM Watsonx AI </h1>", unsafe_allow_html=True)
     
-
-    st.info("Chat Below")
     input_text = st.chat_input(placeholder="Ask me anything!")
     #input_text = st.text_area("Enter your query")
     if input_text is not None:
-        if st.button("Chat with IBM Watsonx AI"):
-            st.info("Your Query: "+input_text)
-            result = generate_response(input_text)
-            st.success(result)
+        st.info("User: "+input_text)
+        result = generate_response(input_text)
+        st.success(result)
     #with st.form('my_form'):
     #    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
     #    submitted = st.form_submit_button('Submit')
