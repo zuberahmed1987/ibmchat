@@ -78,7 +78,7 @@ assistant: """
     # Initialize chat history
     if "messages" not in st.session_state:
         try:
-            st.session_state.messages = localS.getItem("messages")
+            st.session_state.messages = localS.getItem("messages") | []
         except:
             st.session_state.messages = []
 
