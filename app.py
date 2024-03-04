@@ -87,13 +87,13 @@ assistant: """
                 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
-            model = load_model()
             genrated_stream = model.generate_text_stream(prompt=prompt_input)
             response = st.write_stream(response_generator(genrated_stream))
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})
 	
 if __name__ == "__main__":
+    model = load_model()
     main()
 
 
