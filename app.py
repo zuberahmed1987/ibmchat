@@ -1,6 +1,9 @@
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain_ibm import WatsonxLLM
 from ibm_watsonx_ai.foundation_models import Model
+from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
 
@@ -27,33 +30,35 @@ st.set_page_config(
     }
 )
 
-def get_credentials():
-	return {
-		"url" : ibm_url,
-		"apikey" : ibm_apikey
-	}
-
-model = Model(
-    model_id = model_id,
-    params = None,
-    credentials = get_credentials(),
-    project_id = project_id,
-    space_id = space_id
-)
-
-prompt_template = "What color is the {flower}?"
-
-parameters = {
-  "decoding_method": "sample",
-  "max_new_tokens": 4096,
-  "min_new_tokens": 1,
-  "temperature": 0.2,
-  "repetition_penalty": 1
+credentials = {
+    "url": ibm_url,
+    "apikey": ibm_apikey
 }
 
+parameters = {
+    GenParams.DECODING_METHOD: DecodingMethods.SAMPLE.value,
+    GenParams.MAX_NEW_TOKENS: 4096,
+    GenParams.MIN_NEW_TOKENS: 1,
+    GenParams.TEMPERATURE: 0.5,
+    GenParams.TOP_K: 50,
+    GenParams.TOP_P: 1
+}
+
+model = WatsonxLLM(
+    model_id=model_id,
+    url=credentials["url"],
+    apikey=credentials["apikey"],
+    project_id=project_id,
+    params=parameters
+    )
+
 def generate_response(input_text):
-    #llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    llm_chain = LLMChain(llm=model.to_langchain(), prompt=PromptTemplate.from_template(prompt_template))
+    prompt_1 = PromptTemplate(
+        input_variables=["question"],
+        template="Answer the following question: {question}"
+    )
+
+    llm_chain = LLMChain(llm=model, prompt=prompt_1, , output_key='answer')
     st.info(llm_chain(input_text))
   
 with st.form('my_form'):
