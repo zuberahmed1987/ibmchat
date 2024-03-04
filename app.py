@@ -29,8 +29,7 @@ parameters = {
 "max_new_tokens": 4000,
 "min_new_tokens": 1,
 "temperature": 0.2,
-"repetition_penalty": 1,
-"stop_sequences": ["<end_of_code>"]
+"repetition_penalty": 1
 }
 
 # Call IBM Watsonx
@@ -59,18 +58,6 @@ def main():
     user_query = st.chat_input(placeholder="Ask me anything!")
     system_messages = "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using markdown."
     prompt_input = f"""system: {system_messages}
-User: create dockerfile for python app
-assisassistant: 
-```Dockerfile
-FROM python:3.9-slim-buster
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . /app
-EXPOSE 80
-CMD ["python", "app.py"]
-```
-<end_of_code>
 user: {user_query}
 assistant: """
     
