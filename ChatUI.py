@@ -81,7 +81,6 @@ assistant: """
     if "messages" not in st.session_state:
         try:
             st.session_state.messages = localS.getItem("messages") | []
-            st.write(st.session_state.messages)
         except:
             st.session_state.messages = []
 
@@ -96,7 +95,7 @@ assistant: """
             st.markdown(user_query)
             # Add user message to chat history
             st.session_state.messages.append({"role": "user", "content": user_query})
-            localS.setItem("messages", st.session_state.messages)
+            localS.setItem("messages", st.session_state["messages"])
 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
@@ -104,7 +103,7 @@ assistant: """
             response = st.write_stream(response_generator(genrated_stream))
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
-            localS.setItem("messages", st.session_state.messages)
+            localS.setItem("messages", st.session_state["messages"])
         
 if __name__ == "__main__":
     main()
