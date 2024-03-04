@@ -66,6 +66,8 @@ def main():
             st.session_state.messages = []
             localS.deleteAll()
             st.toast('Chat History Cleared!')
+        if st.button('Print data'):
+            st.toast(localS.getItem("messages"))
             
     st.header('IBM Watsonx AI Chatbot')
     st.write('Allows users to interact with the IBM watsonx AI LLM')
