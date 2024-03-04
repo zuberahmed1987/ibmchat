@@ -4,7 +4,7 @@ from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
 import os
-from streamlit_browser_session_storage import sessionStorage
+from from streamlit_local_storage import sessionStorage
 
 load_dotenv()
 sessionBrowserS = SessionStorage()
