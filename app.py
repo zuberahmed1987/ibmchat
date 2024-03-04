@@ -18,8 +18,8 @@ space_id = os.getenv("IBM_WATSONX_SPACE_ID")
 debug = os.getenv("DEBUG", False)
 log_level = os.getenv("LOG_LEVEL", "INFO")
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=log_level)
+#logger = logging.getLogger(__name__)
+#logging.basicConfig(level=log_level)
 
 st.set_page_config(
     page_title="IBM Watsonx Chatui by HCL",
