@@ -81,13 +81,13 @@ assistant: """
         #    response = model.generate_text(prompt=prompt_input)
         #    st.markdown(response)
         #    st.session_state.messages.append({"role": "assistant", "content": response})
-		
-	# Display assistant response in chat message container
-	with st.chat_message("assistant"):
-	    genrated_stream = model.generate_text_stream(prompt=prompt_input)
-	    response = st.write_stream(response_generator(genrated_stream))
-	# Add assistant response to chat history
-	st.session_state.messages.append({"role": "assistant", "content": response})
+                
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            genrated_stream = model.generate_text_stream(prompt=prompt_input)
+            response = st.write_stream(response_generator(genrated_stream))
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": response})
 	
 if __name__ == "__main__":
     main()
