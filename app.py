@@ -93,7 +93,7 @@ assistant: """
         with st.chat_message("assistant"):
             #response = model.generate_text_stream(prompt=prompt_input, params=parameters, guardrails=True)
             #response = generate_response(response)
-            response = model.generate_text(prompt=prompt_input, guardrails=True)
+            response = model.generate_text(prompt=prompt_input)
             st.markdown(response)
             st.session_state.messages.append({"role": "assistant", "content": response})
     
