@@ -61,7 +61,7 @@ def main():
         if st.button('Cook breakfast'):
             st.session_state.conversation = None
             st.session_state.chat_history = None
-            st.session_state.messages = None
+            st.session_state.messages = []
             st.toast('Chat History Cleared!')
             
     st.header('IBM Watsonx AI Chatbot')
