@@ -98,7 +98,9 @@ assistant: """
             st.session_state.messages.append({"role": "assistant", "content": response})
     components.html(
     f"""
-    <script> localStorage.setItem("messages", "{st.session_state.messages}"); </script>
+    <script>
+    var messages = {st.session_state.messages}
+    localStorage.setItem("messages", JSON.stringify(messages)); </script>
     """,1,1 )
 
         
