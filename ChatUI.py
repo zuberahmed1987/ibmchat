@@ -3,6 +3,7 @@ from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 from ibm_watsonx_ai.foundation_models.utils.enums import DecodingMethods
 from dotenv import load_dotenv
 import streamlit as st
+import streamlit.components.v1 as components
 import os
 
 load_dotenv()
@@ -95,9 +96,11 @@ assistant: """
             response = st.write_stream(response_generator(genrated_stream))
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
-
+    
+    components.html(
+    f"""
+    <script> localStorage.setItem("messages", "{st.session_state.messages}"); </script>
+    """,0,0)
         
 if __name__ == "__main__":
     main()
-
-
