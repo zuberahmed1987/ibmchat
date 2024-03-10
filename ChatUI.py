@@ -89,10 +89,6 @@ assistant: """
             st.markdown(user_query)
             # Add user message to chat history
             st.session_state.messages.append({"role": "user", "content": user_query})
-            components.html(
-            f"""
-            <script> localStorage.setItem("messages", "{st.session_state.messages}"); </script>
-            """,0,0 )
 
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
@@ -100,12 +96,11 @@ assistant: """
             response = st.write_stream(response_generator(genrated_stream))
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
-            components.html(
-            f"""
-            <script> localStorage.setItem("messages", "{st.session_state.messages}"); </script>
-            """,0,0 )
+    components.html(
+    f"""
+    <script> localStorage.setItem("messages", "{st.session_state.messages}"); </script>
+    """,1,1 )
 
         
 if __name__ == "__main__":
     main()
-
