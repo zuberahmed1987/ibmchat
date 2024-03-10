@@ -49,7 +49,6 @@ def response_generator(generated_response):
     for chunk in generated_response:
         yield chunk
 
-
 def main():
     st.set_page_config(
         page_title="IBM Watsonx Chatui by HCL",
@@ -73,6 +72,8 @@ def main():
     prompt_input = f"""system: {system_messages}
 user: {user_query}
 assistant: """
+    
+    #load_messages_from_local_storage()
     
     # Initialize chat history
     if "messages" not in st.session_state:
@@ -101,7 +102,7 @@ assistant: """
     <script>
     var messages = {st.session_state.messages}
     localStorage.setItem("messages", JSON.stringify(messages)); </script>
-    """,1,1 )
+    """,0,0 )
 
         
 if __name__ == "__main__":
